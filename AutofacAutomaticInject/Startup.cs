@@ -13,11 +13,13 @@ namespace AutofacAutomaticInject
         static void Main(string[] args)
         {
             var builder = new ContainerBuilder();
-            builder.RegisterType<DependencyObj>().As<IDependencyObj>();
             builder.RegisterType<MightyClass>().WithParameter(new ResolvedParameter(
                 (p, c) => p.ParameterType == typeof(IDependencyObj),
                 (p, c) => c.Resolve<IDependencyObj>())
             ).As<IMightyInterface>();
+
+            builder.RegisterType<DependencyObj>().As<IDependencyObj>();
+            
 
             Container = builder.Build();
 
@@ -34,6 +36,11 @@ namespace AutofacAutomaticInject
 
                 dependency.DoTheWork(42);
             }
+
+//            var type = typeof(IMightyInterface);
+
+//            var atributes = type.GetCustomAttributes(false);
+
         }
     }
 }

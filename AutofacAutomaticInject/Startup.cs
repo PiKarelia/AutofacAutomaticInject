@@ -6,7 +6,7 @@ using AutofacAutomaticInject.High;
 
 namespace AutofacAutomaticInject
 {
-    class Startup
+    public class Startup
     {
         private static IContainer Container { get; set; }
 
@@ -22,6 +22,7 @@ namespace AutofacAutomaticInject
             Container = builder.Build();
 
             SomeCalculations();
+            Console.WriteLine("All was done");
             Console.ReadKey();
         }
 

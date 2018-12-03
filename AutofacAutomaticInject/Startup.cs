@@ -1,8 +1,8 @@
-﻿using System;
+using System;
+using System.Reflection;
 using Autofac;
-using Autofac.Core;
+using AutofacAutomaticInject.AutomaticInject;
 using AutofacAutomaticInject.Dependency;
-using AutofacAutomaticInject.High;
 
 namespace AutofacAutomaticInject
 {
@@ -13,14 +13,7 @@ namespace AutofacAutomaticInject
         static void Main(string[] args)
         {
             var builder = new ContainerBuilder();
-            builder.RegisterType<MightyClass>().WithParameter(new ResolvedParameter(
-                (p, c) => p.ParameterType == typeof(IDependencyObj),
-                (p, c) => c.Resolve<IDependencyObj>())
-            ).As<IMightyInterface>();
-
-            builder.RegisterType<DependencyObj>().As<IDependencyObj>();
-            
-
+            builder.RegisterAll(Assembly.GetAssembly(typeof(Startup)));
             Container = builder.Build();
 
             SomeCalculations();
@@ -32,15 +25,11 @@ namespace AutofacAutomaticInject
         {
             using (var scope = Container.BeginLifetimeScope())
             {
-                var dependency = scope.Resolve<IMightyInterface>();
+//                var dependency = scope.Resolve<IDependencyObj>();
+                var dependency = scope.Resolve<DependencyObj>();
 
-                dependency.DoTheWork(42);
+                dependency.GetMethod(42);
             }
-
-//            var type = typeof(IMightyInterface);
-
-//            var atributes = type.GetCustomAttributes(false);
-
         }
     }
 }
